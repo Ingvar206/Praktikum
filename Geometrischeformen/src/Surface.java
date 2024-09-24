@@ -8,11 +8,4 @@ public abstract class Surface {
 
     public abstract int calculatecircumference();
 
-    //public abstract void drawToConsole();
-
-    @Override
-    public String toString() {
-        return  name + " surface area: " + calculatesurfacearea()
-                + ", circumference: " + calculatecircumference();
-    }
 }

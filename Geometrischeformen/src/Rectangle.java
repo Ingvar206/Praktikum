@@ -8,10 +8,24 @@ public class Rectangle extends Surface {
         this.name = "Rectangle";
     }
 
+    public static Rectangle random() {
+        int rectanglelength = (int)(Math.random() * 10.0) + 1;
+        int rectanglewidth = (int)(Math.random() * 10.0) + 1;
+        return new Rectangle(rectanglelength, rectanglewidth);
+    }
+
     public int calculatesurfacearea() {
         return this.length * this.width;
     }
     public int calculatecircumference() {
         return (this.length + this.width) * 2;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

@@ -12,10 +12,21 @@ public class Triangle extends Surface{
         this.name = "Triangle";
     }
 
+    public static Triangle random() {
+        int trianglebaselength = (int)(Math.random() * 10.0) + 1;
+        int triangleleftlength = (int)(Math.random() * 10.0) + 1;
+        int trianglerightlength = (int)(Math.random() * 10.0) + 1;
+        int trianglehight = (int) Math.sqrt(trianglebaselength * trianglebaselength - ((trianglerightlength / 2) * (trianglerightlength / 2)));
+        return new Triangle(trianglebaselength, triangleleftlength, trianglerightlength, trianglehight);
+    }
     public int calculatesurfacearea() {
         return (this.baselength * this.hight) / 2;
     }
     public int calculatecircumference() {
         return this.baselength + this.leftlength + this.rightlength;
+    }
+
+    public int getHight() {
+        return hight;
     }
 }
