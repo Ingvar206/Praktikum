@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Square extends Surface {
     private final int length;
 
@@ -6,9 +8,13 @@ public class Square extends Surface {
         this.name = "Square";
     }
 
-    public static Square random() {
-        int squarelength = (int) (Math.random() * 10.0) + 1;
+    public static Square size() {
+        Scanner squaresize = new Scanner(System.in);
+        System.out.println("what is the side length of the square?");
+        int squarelength = squaresize.nextInt();
         return new Square(squarelength);
+//        int squarelength = (int) (Math.random() * 10.0) + 1;
+//        return new Square(squarelength);
     }
 
 
