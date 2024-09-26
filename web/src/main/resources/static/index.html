@@ -1,9 +1,134 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <title>Praktikum Web</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flächeninhalt Berechnung</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://static.vecteezy.com/system/resources/previews/025/361/681/non_2x/math-thin-line-dark-pattern-mathematics-education-seamless-background-vector.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        form {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        select, input[type="number"], button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-left: 10px;
+            background-color: #555;
+            color: #fff;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-Hallo!
+<h1>Flächeninhalt Berechnung</h1>
+<form id="shapeForm">
+    <div class="form-group">
+        <label for="shape">Wähle eine Form:</label>
+        <select id="shape" name="shape" onchange="showInputs()">
+            <option value="">--Bitte wählen--</option>
+            <option value="square">Quadrat</option>
+            <option value="rectangle">Rechteck</option>
+            <option value="triangle">Dreieck</option>
+        </select>
+    </div>
+
+    <div id="squareInputs" class="hidden form-group">
+        <label for="squareSide">Seitenlänge:</label>
+        <input type="number" id="squareSide" name="squareSide">
+    </div>
+
+    <div id="rectangleInputs" class="hidden form-group">
+        <label for="rectangleWidth">Breite:</label>
+        <input type="number" id="rectangleWidth" name="rectangleWidth">
+        <label for="rectangleHeight">Höhe:</label>
+        <input type="number" id="rectangleHeight" name="rectangleHeight">
+    </div>
+
+    <div id="triangleInputs" class="hidden form-group">
+        <label for="triangleBase">Basis:</label>
+        <input type="number" id="triangleBase" name="triangleBase">
+        <label for="triangleHeight">Höhe:</label>
+        <input type="number" id="triangleHeight" name="triangleHeight">
+    </div>
+
+    <button type="submit" formaction="/surface/result">Berechnen</button>
+</form>
+
+<script>
+    function showInputs() {
+        document.getElementById('squareInputs').classList.add('hidden');
+        document.getElementById('rectangleInputs').classList.add('hidden');
+        document.getElementById('triangleInputs').classList.add('hidden');
+
+        const shape = document.getElementById('shape').value;
+        if (shape === 'square') {
+            document.getElementById('squareInputs').classList.remove('hidden');
+        } else if (shape === 'rectangle') {
+            document.getElementById('rectangleInputs').classList.remove('hidden');
+        } else if (shape === 'triangle') {
+            document.getElementById('triangleInputs').classList.remove('hidden');
+        }
+    }
+</script>
 </body>
 </html>

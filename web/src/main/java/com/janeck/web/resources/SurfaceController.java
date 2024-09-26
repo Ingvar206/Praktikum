@@ -4,20 +4,39 @@
  */
 package com.janeck.web.resources;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.janeck.web.tools.Surfacecalculator;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * @author dme
- */
 @RestController
 @RequestMapping("/surface")
 public class SurfaceController {
 
-	@GetMapping("/hello/{name}")
-	public String hello(@PathVariable String name) {
-		return "Hello " + name;
+	private final Surfacecalculator surfacecalculator;
+
+	public SurfaceController(Surfacecalculator surfacecalculator) {
+		this.surfacecalculator = surfacecalculator;
 	}
+
+	@GetMapping("/result")
+	public double getResult(
+			@RequestParam() String shape,
+			@RequestParam(required = false) Double squareSide,
+			@RequestParam(required = false) Double rectangleHeight,
+			@RequestParam(required = false) Double rectangleWidth,
+			@RequestParam(required = false) Double triangleBase,
+			@RequestParam(required = false) Double triangleHeight) {
+		switch (shape) {
+			case "square":
+				return surfacecalculator.calculateSquareArea(squareSide);
+
+			case "rectangle":
+				return surfacecalculator.calculateRectangleArea(rectangleHeight, rectangleWidth);
+
+			case "triangle":
+				return surfacecalculator.calculateTriangleArea(triangleBase, triangleHeight);
+		}
+
+		return 00.7;
+
+    }
 }
