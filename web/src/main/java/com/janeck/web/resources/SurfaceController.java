@@ -4,11 +4,18 @@
  */
 package com.janeck.web.resources;
 
+import com.janeck.web.dto.ShapeDTO;
 import com.janeck.web.tools.Surfacecalculator;
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/surface")
+@Validated
 public class SurfaceController {
 
 	private final Surfacecalculator surfacecalculator;
@@ -18,25 +25,19 @@ public class SurfaceController {
 	}
 
 	@GetMapping("/result")
-	public double getResult(
-			@RequestParam() String shape,
-			@RequestParam(required = false) Double squareSide,
-			@RequestParam(required = false) Double rectangleHeight,
-			@RequestParam(required = false) Double rectangleWidth,
-			@RequestParam(required = false) Double triangleBase,
-			@RequestParam(required = false) Double triangleHeight) {
-		switch (shape) {
-			case "square":
-				return surfacecalculator.calculateSquareArea(squareSide);
+	public Map<String, Double> getResult(@Valid ShapeDTO shapeDTO) {
+		double area = 0;
 
-			case "rectangle":
-				return surfacecalculator.calculateRectangleArea(rectangleHeight, rectangleWidth);
-
-			case "triangle":
-				return surfacecalculator.calculateTriangleArea(triangleBase, triangleHeight);
+		switch (shapeDTO.getShape()) {
+			case "square" -> area = surfacecalculator.calculateSquareArea(shapeDTO.getSquareSide());
+			case "rectangle" -> area = surfacecalculator.calculateRectangleArea(shapeDTO.getRectangleHeight(), shapeDTO.getRectangleWidth());
+			case "triangle" -> area = surfacecalculator.calculateTriangleArea(shapeDTO.getTriangleBase(), shapeDTO.getTriangleHeight());
+			case "circle" -> area = surfacecalculator.calculateCircleArea(shapeDTO.getCircleRadius());
 		}
 
-		return 00.7;
-
-    }
+		Map<String, Double> result = new HashMap<>();
+		result.put("area", area);
+		return result;
+	}
 }
+

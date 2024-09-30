@@ -7,9 +7,9 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: url('https://static.vecteezy.com/system/resources/previews/025/361/681/non_2x/math-thin-line-dark-pattern-mathematics-education-seamless-background-vector.jpg') no-repeat center center fixed;
+            background: url(Design%20ohne%20Titel.jpg) no-repeat center center fixed;
             background-size: cover;
-            color: #fff;
+            color: #000;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,16 +17,19 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: #e0f7fa;
         }
 
         h1 {
-            color: #4CAF50;
+            color: #ffffff;
             text-align: center;
             margin-top: 20px;
             margin-bottom: 40px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(30, 136, 229, 0.7);
             padding: 10px 20px;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1s ease-in-out;
         }
 
         form {
@@ -36,13 +39,14 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             width: 100%;
+            animation: slideIn 1s ease-in-out;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #fff;
+            color: #1e88e5;
         }
 
         select, input[type="number"], button {
@@ -54,11 +58,11 @@
             box-sizing: border-box;
             margin-left: 10px;
             background-color: #555;
-            color: #fff;
+            color: #1e88e5;
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: #1e88e5;
             color: white;
             border: none;
             cursor: pointer;
@@ -67,7 +71,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #0d47a1;
         }
 
         .hidden {
@@ -77,11 +81,35 @@
         .form-group {
             margin-bottom: 15px;
         }
+
+        #result {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #1e88e5;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1s ease-in-out;
+        }
+
+        canvas {
+            margin-top: 130px;
+            border: 1px solid #000;
+            background-color: #fff;
+            transform: scale(3);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
 <h1>Flächeninhalt Berechnung</h1>
-<form id="shapeForm">
+<form id="shapeForm" onsubmit="submitForm(event)">
     <div class="form-group">
         <label for="shape">Wähle eine Form:</label>
         <select id="shape" name="shape" onchange="showInputs()">
@@ -89,36 +117,51 @@
             <option value="square">Quadrat</option>
             <option value="rectangle">Rechteck</option>
             <option value="triangle">Dreieck</option>
+            <option value="circle">Kreis</option>
         </select>
     </div>
 
     <div id="squareInputs" class="hidden form-group">
         <label for="squareSide">Seitenlänge:</label>
-        <input type="number" id="squareSide" name="squareSide">
+        <input type="number" id="squareSide" name="squareSide" max="100">
     </div>
 
     <div id="rectangleInputs" class="hidden form-group">
         <label for="rectangleWidth">Breite:</label>
-        <input type="number" id="rectangleWidth" name="rectangleWidth">
+        <input type="number" id="rectangleWidth" name="rectangleWidth" max="100">
         <label for="rectangleHeight">Höhe:</label>
-        <input type="number" id="rectangleHeight" name="rectangleHeight">
+        <input type="number" id="rectangleHeight" name="rectangleHeight" max="100">
     </div>
 
     <div id="triangleInputs" class="hidden form-group">
         <label for="triangleBase">Basis:</label>
-        <input type="number" id="triangleBase" name="triangleBase">
+        <input type="number" id="triangleBase" name="triangleBase" max="100">
         <label for="triangleHeight">Höhe:</label>
-        <input type="number" id="triangleHeight" name="triangleHeight">
+        <input type="number" id="triangleHeight" name="triangleHeight" max="100">
     </div>
 
-    <button type="submit" formaction="/surface/result">Berechnen</button>
+    <div id="circleInputs" class="hidden form-group">
+        <label for="circleRadius">Radius</label>
+        <input type="number" id="circleRadius" name="circleRadius" max="50">
+    </div>
+
+    <button type="submit">Berechnen</button>
 </form>
+
+<div id="result" class="hidden">
+    <p>Flächeninhalt: <span id="areaResult"></span></p>
+</div>
+
+<canvas id="shapeCanvas" width="100" height="100" class="hidden"></canvas>
 
 <script>
     function showInputs() {
         document.getElementById('squareInputs').classList.add('hidden');
         document.getElementById('rectangleInputs').classList.add('hidden');
         document.getElementById('triangleInputs').classList.add('hidden');
+        document.getElementById('circleInputs').classList.add('hidden');
+        document.getElementById('result').classList.add('hidden');
+        document.getElementById('shapeCanvas').classList.add('hidden');
 
         const shape = document.getElementById('shape').value;
         if (shape === 'square') {
@@ -127,8 +170,66 @@
             document.getElementById('rectangleInputs').classList.remove('hidden');
         } else if (shape === 'triangle') {
             document.getElementById('triangleInputs').classList.remove('hidden');
+        }else if (shape === 'circle') {
+            document.getElementById('circleInputs').classList.remove('hidden')
         }
     }
+
+    function submitForm(event) {
+        event.preventDefault();
+        const form = document.getElementById('shapeForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData).toString();
+
+        fetch(`/surface/result?${params}`)
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('areaResult').textContent = result.area;
+                document.getElementById('result').classList.remove('hidden');
+                drawShape();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+   function drawShape() {
+    const shape = document.getElementById('shape').value;
+    const canvas = document.getElementById('shapeCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#4682B4';
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+
+    if (shape === 'square') {
+        const side = Math.min(parseFloat(document.getElementById('squareSide').value), 100);
+        ctx.fillRect(0, 100 - side, side, side);
+        ctx.strokeRect(0, 100 - side, side, side);
+    } else if (shape === 'rectangle') {
+        const width = Math.min(parseFloat(document.getElementById('rectangleWidth').value), 100);
+        const height = Math.min(parseFloat(document.getElementById('rectangleHeight').value), 100);
+        ctx.fillRect(0, 100 - height, width, height);
+        ctx.strokeRect(0, 100 - height, width, height);
+    } else if (shape === 'triangle') {
+        const base = Math.min(parseFloat(document.getElementById('triangleBase').value), 100);
+        const height = Math.min(parseFloat(document.getElementById('triangleHeight').value), 100);
+        ctx.beginPath();
+        ctx.moveTo(0, 100);
+        ctx.lineTo(base, 100);
+        ctx.lineTo(base / 2, 100 - height);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }else if (shape === 'circle') {
+        const radius = Math.min(parseFloat(document.getElementById('circleRadius').value), 50);
+        ctx.beginPath();
+        ctx.arc(50, 50, radius, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }
+    canvas.classList.remove('hidden');
+}
 </script>
 </body>
 </html>
