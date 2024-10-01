@@ -7,34 +7,34 @@ import jakarta.validation.constraints.NotNull;
 
 public class ShapeDTO {
 
-    @NotNull(message = "Shape is required")
+    @NotNull(message = "Bitte wählen sie eine Form")
     private String shape;
 
-    @Min(value = 0, message = "Value must be between 0 and 100")
-    @Max(value = 100, message = "Value must be between 0 and 100")
+    @Min(value = 0, message = "Die Eingabe muss zwischen 0 und 100 sein")
+    @Max(value = 100, message = "Die Eingabe muss zwischen 0 und 100 sein")
     private Double squareSide;
 
-    @Min(value = 0, message = "Value must be between 0 and 100")
-    @Max(value = 100, message = "Value must be between 0 and 100")
+    @Min(value = 0, message = "Die Eingabe muss zwischen 0 und 100 sein")
+    @Max(value = 100, message = "Die Eingabe muss zwischen 0 und 100 sein")
     private Double rectangleHeight;
 
-    @Min(value = 0, message = "Value must be between 0 and 100")
-    @Max(value = 100, message = "Value must be between 0 and 100")
+    @Min(value = 0, message = "Die Eingabe muss zwischen 0 und 100 sein")
+    @Max(value = 100, message = "Die Eingabe muss zwischen 0 und 100 sein")
     private Double rectangleWidth;
 
-    @Min(value = 0, message = "Value must be between 0 and 100")
-    @Max(value = 100, message = "Value must be between 0 and 100")
+    @Min(value = 0, message = "Die Eingabe muss zwischen 0 und 100 sein")
+    @Max(value = 100, message = "Die Eingabe muss zwischen 0 und 100 sein")
     private Double triangleBase;
 
-    @Min(value = 0, message = "Value must be between 0 and 100")
-    @Max(value = 100, message = "Value must be between 0 and 100")
+    @Min(value = 0, message = "Die Eingabe muss zwischen 0 und 100 sein")
+    @Max(value = 100, message = "Die Eingabe muss zwischen 0 und 100 sein")
     private Double triangleHeight;
 
-    @Min(value = 0, message = "Value must be between 0 and 50")
-    @Max(value = 50, message = "Value must be between 0 and 50")
+    @Min(value = 0, message = "Die Eingabe muss zwischen 0 und 50 sein")
+    @Max(value = 50, message = "Die Eingabe muss zwischen 0 und 50 sein")
     private Double circleRadius;
 
-    // Getter und Setter
+
 
     public String getShape() {
         return shape;
