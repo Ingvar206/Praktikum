@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,38 +12,40 @@
         margin: 0;
         padding: 0;
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         height: 100vh;
     }
 
     h1 {
-        font-size: 5em;
+        width: 100%;
+        text-align: center;
+        font-size: 10em;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         animation: bounce 2s infinite;
     }
 
     .eel {
         width: 150px;
-        height: 20px;
-        background-color: #000;
-        border-radius: 50px;
+        height: 40px;
+        border-radius: 20px;
         position: relative;
         animation: dance 2s infinite;
         display: flex;
         align-items: center;
+        margin: 10px;
+        overflow: hidden;
     }
 
     .eel::before {
         content: '';
-        width: 30px;
-        height: 30px;
-        background-color: #000;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         position: absolute;
-        top: -5px;
-        left: -15px;
+        top: 0;
+        left: -20px;
     }
 
     .eye {
@@ -52,14 +54,13 @@
         background-color: #fff;
         border-radius: 50%;
         position: absolute;
-        top: 5px;
-        left: 5px;
+        top: 10px;
+        left: 10px;
     }
 
     .fin {
         width: 10px;
         height: 20px;
-        background-color: #000;
         border-radius: 50%;
         position: absolute;
         top: 50%;
@@ -82,6 +83,30 @@
         height: 20px;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.5), transparent);
         animation: electric 1s infinite;
+    }
+
+    .eel.black {
+        background-color: #000;
+    }
+
+    .eel.black::before {
+        background-color: #000;
+    }
+
+    .eel.darkblue {
+        background-color: #00008B;
+    }
+
+    .eel.darkblue::before {
+        background-color: #00008B;
+    }
+
+    .eel.darkgreen {
+        background-color: #006400;
+    }
+
+    .eel.darkgreen::before {
+        background-color: #006400;
     }
 
     @keyframes bounce {
@@ -135,7 +160,109 @@
 </head>
 <body>
 <h1>AAL</h1>
-<div class="eel">
+<div class="eel black">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkblue">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkgreen">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel black">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkblue">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkgreen">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel black">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkblue">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkgreen">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel black">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkblue">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkgreen">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel black">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkblue">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkgreen">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel black">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkblue">
+  <div class="eye"></div>
+  <div class="fin left"></div>
+  <div class="fin right"></div>
+  <div class="electric"></div>
+</div>
+<div class="eel darkgreen">
   <div class="eye"></div>
   <div class="fin left"></div>
   <div class="fin right"></div>

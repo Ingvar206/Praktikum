@@ -5,6 +5,8 @@
 package com.janeck.web.resources;
 
 import com.janeck.web.dto.ShapeDTO;
+import com.janeck.web.tools.CalculationHistory;
+import com.janeck.web.tools.Feedback;
 import com.janeck.web.tools.Surfacecalculator;
 import jakarta.validation.Valid;
 import org.springframework.core.io.ClassPathResource;
@@ -19,14 +21,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
 @RequestMapping("/surface")
 @Validated
 public class SurfaceController {
-
 	private final Surfacecalculator surfacecalculator;
+
+	private final List<CalculationHistory> history = new ArrayList<>();
+	private final List<Feedback> feedbackList = new ArrayList<>();
 
 	public SurfaceController(Surfacecalculator surfacecalculator) {
 		this.surfacecalculator = surfacecalculator;
@@ -43,6 +49,7 @@ public class SurfaceController {
 			case "circle" -> area = surfacecalculator.calculateCircleArea(shapeDTO.getCircleRadius());
 
 		}
+		history.add(new CalculationHistory("area", shapeDTO.getShape(), area));
 
 		Map<String, Double> result = new HashMap<>();
 		result.put("area", area);
@@ -61,6 +68,8 @@ public class SurfaceController {
 
 		}
 
+		history.add(new CalculationHistory("circumference", shapeDTO.getShape(), circumference));
+
 		Map<String, Double> result = new HashMap<>();
 		result.put("circumference", circumference);
 		return result;
@@ -69,6 +78,36 @@ public class SurfaceController {
 	@GetMapping("/aal")
 	public ResponseEntity<byte[]> getAalPage() throws IOException {
 		ClassPathResource resource = new ClassPathResource("static/aal.html");
+		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
+		return new ResponseEntity<>(content, headers, HttpStatus.OK);
+	}
+
+	@GetMapping("/feedback")
+	public ResponseEntity<byte[]> getFeedbackPage() throws IOException {
+		ClassPathResource resource = new ClassPathResource("static/feedback.html");
+		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
+		return new ResponseEntity<>(content, headers, HttpStatus.OK);
+	}
+
+	@GetMapping("/afterfeedback")
+	public ResponseEntity<byte[]> getAfterFeedbackPage() throws IOException {
+		ClassPathResource resource = new ClassPathResource("static/afterfeedback.html");
+		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
+		return new ResponseEntity<>(content, headers, HttpStatus.OK);
+	}
+	@GetMapping("/history")
+	public List<CalculationHistory> getHistory() {
+		return history;
+	}
+	@GetMapping("/historyPage")
+	public ResponseEntity<byte[]> getHistoryPage() throws IOException {
+		ClassPathResource resource = new ClassPathResource("static/history.html");
 		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berechnungshistorie</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f7fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #1e88e5;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .history-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .history-item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Berechnungshistorie</h1>
+<div class="history-container" id="historyContainer">
+</div>
+
+<script>
+    function fetchHistory() {
+        fetch('/surface/history')
+            .then(response => response.json())
+            .then(data => {
+                const historyContainer = document.getElementById('historyContainer');
+                historyContainer.innerHTML = '';
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.classList.add('history-item');
+                    div.innerHTML = `
+                        <p><strong>Berechnung:</strong> ${item.calculationType}</p>
+                        <p><strong>Form:</strong> ${item.shape}</p>
+                        <p><strong>Ergebnis:</strong> ${item.result}</p>
+                    `;
+                    historyContainer.appendChild(div);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    window.onload = fetchHistory;
+</script>
+</body>
+</html>
