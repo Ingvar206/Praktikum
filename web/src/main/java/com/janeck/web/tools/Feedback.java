@@ -3,10 +3,12 @@ package com.janeck.web.tools;
 public class Feedback {
     private String name;
     private String email;
-    private int rating;
+    private String rating;
     private String comments;
 
-    public Feedback(String name, String email, int rating, String comments) {
+    public Feedback() {}
+
+    public Feedback(String name, String email, String rating, String comments) {
         this.name = name;
         this.email = email;
         this.rating = rating;
@@ -29,11 +31,11 @@ public class Feedback {
         this.email = email;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -43,5 +45,15 @@ public class Feedback {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", rating='" + rating + '\'' +
+                ", comments='" + comments + '\'' +
+                '}';
     }
 }

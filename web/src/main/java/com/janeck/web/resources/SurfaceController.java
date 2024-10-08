@@ -6,7 +6,6 @@ package com.janeck.web.resources;
 
 import com.janeck.web.dto.ShapeDTO;
 import com.janeck.web.tools.CalculationHistory;
-import com.janeck.web.tools.Feedback;
 import com.janeck.web.tools.Surfacecalculator;
 import jakarta.validation.Valid;
 import org.springframework.core.io.ClassPathResource;
@@ -32,7 +31,6 @@ public class SurfaceController {
 	private final Surfacecalculator surfacecalculator;
 
 	private final List<CalculationHistory> history = new ArrayList<>();
-	private final List<Feedback> feedbackList = new ArrayList<>();
 
 	public SurfaceController(Surfacecalculator surfacecalculator) {
 		this.surfacecalculator = surfacecalculator;
