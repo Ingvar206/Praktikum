@@ -2,7 +2,7 @@ package com.janeck.web.tools;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Surfacecalculator {
+public class SurfaceCalculator {
 
 
     public double calculateSquareArea(double squareSide) {

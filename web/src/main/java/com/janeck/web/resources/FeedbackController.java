@@ -57,7 +57,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/view")
-    public ResponseEntity<byte[]> getAalPage() throws IOException {
+    public ResponseEntity<byte[]> getViewPage() throws IOException {
         ClassPathResource resource = new ClassPathResource("static/feedback-view.html");
         byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
         HttpHeaders headers = new HttpHeaders();

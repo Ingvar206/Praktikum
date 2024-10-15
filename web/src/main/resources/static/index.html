@@ -6,113 +6,113 @@
     <title>Berechnung</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background: url(Design%20ohne%20Titel.jpg) no-repeat center center fixed;
-            background-size: cover;
-            color: #000;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #e0f7fa;
-        }
+      font-family: 'Arial', sans-serif;
+      background: url(Design%20ohne%20Titel.jpg) no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #e0f7fa;
+  }
 
-        h1 {
-            color: #ffffff;
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 40px;
-            background-color: rgba(30, 136, 229, 0.7);
-            padding: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            animation: slideIn 1s ease-in-out;
-        }
+  h1 {
+      color: #ffffff;
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 40px;
+      background-color: rgba(30, 136, 229, 0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      animation: slideIn 1s ease-in-out;
+  }
 
-        form {
-            background: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            animation: slideIn 1s ease-in-out;
-        }
+  form {
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      animation: slideIn 1s ease-in-out;
+  }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #1e88e5;
-        }
+  label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #ffffff; /* Changed to white for better readability */
+  }
 
-        select, input[type="number"], button {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            margin-left: 10px;
-            background-color: #555;
-            color: #1e88e5;
-        }
+  select, input[type="number"], button {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      margin-left: 10px;
+      background-color: #555;
+      color: #ffffff; /* Changed to white for better readability */
+  }
 
-        button {
-            background-color: #1e88e5;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
+  button {
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+  }
 
-        button:hover {
-            background-color: #0d47a1;
-        }
+  button:hover {
+      background-color: #0d47a1;
+  }
 
-        .hidden {
-            display: none;
-        }
+  .hidden {
+      display: none;
+  }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+  .form-group {
+      margin-bottom: 15px;
+  }
 
-        #result {
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 18px;
-            color: #1e88e5;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            animation: slideIn 1s ease-in-out;
-        }
+  #result {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #ffffff; /* Changed to white for better readability */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      animation: slideIn 1s ease-in-out;
+  }
 
-        canvas {
-            margin-top: 130px;
-            border: 1px solid #000;
-            background-color: #fff;
-            transform: scale(3);
-        }
+  canvas {
+      margin-top: 130px;
+      border: 1px solid #000;
+      background-color: #fff;
+      transform: scale(3);
+  }
 
-        @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+  @keyframes slideIn {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+  }
     </style>
 </head>
 <body>
 <h1>FormelWunder</h1>
 
-<button id="hiddenButton" onclick="window.location.href='/surface/aal'" style="position: absolute; top: 10px; right: 10px; background: transparent; border: none; cursor: pointer; width: 50px; height: 50px;"></button>
-<button id="feedbackButton" onclick="window.location.href='/surface/feedback'" style="position: absolute; top: 10px; left: 10px; border: none; cursor: pointer; width: 100px; height: 30px; background-color: #333; color: #fff;">Feedback</button>
-<button id="historyButton" onclick="window.location.href='/surface/historyPage'" style="position: absolute; top: 50px; left: 10px; border: none; cursor: pointer; width: 100px; height: 30px; background-color: #333; color: #fff;">Verlauf</button>
+<button id="hiddenButton" onclick="window.location.href='/aal.html'" style="position: absolute; top: 10px; right: 10px; background: transparent; border: none; cursor: pointer; width: 50px; height: 50px;"></button>
+<button id="feedbackButton" onclick="window.location.href='/feedback.html'" style="position: absolute; top: 10px; left: 10px; border: none; cursor: pointer; width: 100px; height: 30px; background-color: #333; color: #fff;">Feedback</button>
+<button id="historyButton" onclick="window.location.href='/history.html'" style="position: absolute; top: 50px; left: 10px; border: none; cursor: pointer; width: 100px; height: 30px; background-color: #333; color: #fff;">Verlauf</button>
 
 <form id="initialForm" onsubmit="handleInitialForm(event)">
     <div class="form-group">
@@ -137,26 +137,26 @@
             <option value="circle">Kreis</option>
         </select>
     </div><div id="squareInputs" class="hidden form-group">
-    <label for="squareSide">Seitenlänge:</label>
+    <label for="squareSide">Seitenlänge in Millimeter:</label>
     <input type="number" id="squareSide" name="squareSide" max="100" min="0">
 </div>
 
     <div id="rectangleInputs" class="hidden form-group">
-        <label for="rectangleWidth">Breite:</label>
+        <label for="rectangleWidth">Breite in Millimeter:</label>
         <input type="number" id="rectangleWidth" name="rectangleWidth" max="100" min="0">
-        <label for="rectangleHeight">Höhe:</label>
+        <label for="rectangleHeight">Höhe in Millimeter:</label>
         <input type="number" id="rectangleHeight" name="rectangleHeight" max="100" min="0">
     </div>
 
     <div id="triangleInputs" class="hidden form-group">
-        <label for="triangleBase">Basis:</label>
+        <label for="triangleBase">Basis in Millimeter:</label>
         <input type="number" id="triangleBase" name="triangleBase" max="100" min="0">
-        <label for="triangleHeight">Höhe:</label>
+        <label for="triangleHeight">Höhe in Millimeter:</label>
         <input type="number" id="triangleHeight" name="triangleHeight" max="100" min="0">
     </div>
 
     <div id="circleInputs" class="hidden form-group">
-        <label for="circleRadius">Radius:</label>
+        <label for="circleRadius">Radius in Millimeter:</label>
         <input type="number" id="circleRadius" name="circleRadius" max="50" min="0">
     </div>
 
@@ -164,7 +164,7 @@
 </form>
 
 <div id="result" class="hidden">
-    <p>Ergebnis: <span id="areaResult"></span></p>
+    <p>Ergebnis in Millimeter: <span id="areaResult"></span></p>
 </div>
 <canvas id="shapeCanvas" width="100" height="100" class="hidden"></canvas>
 

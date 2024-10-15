@@ -4,36 +4,59 @@
  */
 package com.janeck.web.resources;
 
+import com.google.gson.Gson;
 import com.janeck.web.dto.ShapeDTO;
 import com.janeck.web.tools.CalculationHistory;
-import com.janeck.web.tools.Surfacecalculator;
+import com.janeck.web.tools.SurfaceCalculator;
 import jakarta.validation.Valid;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 @RestController
 @RequestMapping("/surface")
 @Validated
 public class SurfaceController {
-	private final Surfacecalculator surfacecalculator;
-
+	private final SurfaceCalculator surfacecalculator;
 	private final List<CalculationHistory> history = new ArrayList<>();
+	private final Gson gson = new Gson();
+	private final File historyFile = new File("C:\\Users\\jta\\Documents\\Projects\\web\\src\\main\\resources\\static\\history.json");
 
-	public SurfaceController(Surfacecalculator surfacecalculator) {
+	public SurfaceController(SurfaceCalculator surfacecalculator) {
 		this.surfacecalculator = surfacecalculator;
+		loadHistoryFromFile();
+	}
+
+	private void loadHistoryFromFile() {
+		try (FileReader reader = new FileReader(historyFile)) {
+			if (historyFile.exists() && historyFile.length() != 0) {
+				CalculationHistory[] historyArray = gson.fromJson(reader, CalculationHistory[].class);
+				history.clear();
+				history.addAll(List.of(historyArray));
+				System.out.println("Historie geladen: " + history);
+			} else {
+				System.out.println("Datei nicht gefunden oder leer: " + historyFile.getAbsolutePath());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void saveHistoryToFile() {
+		try (FileWriter writer = new FileWriter(historyFile)) {
+			gson.toJson(history, writer);
+			System.out.println("Historie gespeichert: " + history);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@GetMapping("/resultarea")
@@ -44,10 +67,10 @@ public class SurfaceController {
 			case "square" -> area = surfacecalculator.calculateSquareArea(shapeDTO.getSquareSide());
 			case "rectangle" -> area = surfacecalculator.calculateRectangleArea(shapeDTO.getRectangleHeight(), shapeDTO.getRectangleWidth());
 			case "triangle" -> area = surfacecalculator.calculateTriangleArea(shapeDTO.getTriangleBase(), shapeDTO.getTriangleHeight());
-			case "circle" -> area = surfacecalculator.calculateCircleArea(shapeDTO.getCircleRadius());
-
+			case "circle" -> area = Math.round(surfacecalculator.calculateCircleArea(shapeDTO.getCircleRadius()) * 100.0) / 100.0;
 		}
 		history.add(new CalculationHistory("area", shapeDTO.getShape(), area));
+		saveHistoryToFile();
 
 		Map<String, Double> result = new HashMap<>();
 		result.put("area", area);
@@ -55,7 +78,7 @@ public class SurfaceController {
 	}
 
 	@GetMapping("/resultcircumference")
-	public Map<String, Double> getResultCircumference(@Valid ShapeDTO shapeDTO){
+	public Map<String, Double> getResultCircumference(@Valid ShapeDTO shapeDTO) {
 		double circumference = 0;
 
 		switch (shapeDTO.getShape()) {
@@ -63,53 +86,19 @@ public class SurfaceController {
 			case "rectangle" -> circumference = surfacecalculator.calculateRectangleCircumference(shapeDTO.getRectangleHeight(), shapeDTO.getRectangleWidth());
 			case "triangle" -> circumference = surfacecalculator.calculateTriangleCircumference(shapeDTO.getTriangleBase());
 			case "circle" -> circumference = surfacecalculator.calculateCircleCircumference(shapeDTO.getCircleRadius());
-
 		}
 
 		history.add(new CalculationHistory("circumference", shapeDTO.getShape(), circumference));
+		saveHistoryToFile();
 
 		Map<String, Double> result = new HashMap<>();
 		result.put("circumference", circumference);
 		return result;
 	}
 
-	@GetMapping("/aal")
-	public ResponseEntity<byte[]> getAalPage() throws IOException {
-		ClassPathResource resource = new ClassPathResource("static/aal.html");
-		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
-		return new ResponseEntity<>(content, headers, HttpStatus.OK);
-	}
-
-	@GetMapping("/feedback")
-	public ResponseEntity<byte[]> getFeedbackPage() throws IOException {
-		ClassPathResource resource = new ClassPathResource("static/feedback.html");
-		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
-		return new ResponseEntity<>(content, headers, HttpStatus.OK);
-	}
-
-	@GetMapping("/afterfeedback")
-	public ResponseEntity<byte[]> getAfterFeedbackPage() throws IOException {
-		ClassPathResource resource = new ClassPathResource("static/afterfeedback.html");
-		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
-		return new ResponseEntity<>(content, headers, HttpStatus.OK);
-	}
 	@GetMapping("/history")
 	public List<CalculationHistory> getHistory() {
 		return history;
-	}
-	@GetMapping("/historyPage")
-	public ResponseEntity<byte[]> getHistoryPage() throws IOException {
-		ClassPathResource resource = new ClassPathResource("static/history.html");
-		byte[] content = Files.readAllBytes(Path.of(resource.getURI()));
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
-		return new ResponseEntity<>(content, headers, HttpStatus.OK);
 	}
 }
 
