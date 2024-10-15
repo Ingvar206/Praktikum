@@ -58,7 +58,7 @@
       box-sizing: border-box;
       margin-left: 10px;
       background-color: #555;
-      color: #ffffff; /* Changed to white for better readability */
+      color: #ffffff;
   }
 
   button {
@@ -171,92 +171,131 @@
 <script>
     let calculationType = '';
 
-    function handleInitialForm(event) {
-        event.preventDefault();
-        calculationType = document.getElementById('calculationType').value;
-        if (calculationType) {
-            document.getElementById('initialForm').classList.add('hidden');
-            document.getElementById('shapeForm').classList.remove('hidden');
-        }
-    }
+  function handleInitialForm(event) {
+      event.preventDefault();
+      calculationType = document.getElementById('calculationType').value;
+      if (calculationType) {
+          document.getElementById('initialForm').classList.add('hidden');
+          document.getElementById('shapeForm').classList.remove('hidden');
+      }
+  }
 
-    function showInputs() {
-        document.getElementById('squareInputs').classList.add('hidden');
-        document.getElementById('rectangleInputs').classList.add('hidden');
-        document.getElementById('triangleInputs').classList.add('hidden');
-        document.getElementById('circleInputs').classList.add('hidden');
-        document.getElementById('result').classList.add('hidden');
-        document.getElementById('shapeCanvas').classList.add('hidden');
+  function showInputs() {
+      document.getElementById('squareInputs').classList.add('hidden');
+      document.getElementById('rectangleInputs').classList.add('hidden');
+      document.getElementById('triangleInputs').classList.add('hidden');
+      document.getElementById('circleInputs').classList.add('hidden');
+      document.getElementById('result').classList.add('hidden');
+      document.getElementById('shapeCanvas').classList.add('hidden');
 
-        const shape = document.getElementById('shape').value;
-        if (shape === 'square') {
-            document.getElementById('squareInputs').classList.remove('hidden');
-        } else if (shape === 'rectangle') {
-            document.getElementById('rectangleInputs').classList.remove('hidden');
-        } else if (shape === 'triangle') {
-            document.getElementById('triangleInputs').classList.remove('hidden');
-        } else if (shape === 'circle') {
-            document.getElementById('circleInputs').classList.remove('hidden');
-        }
-    }
+      const shape = document.getElementById('shape').value;
+      if (shape === 'square') {
+          document.getElementById('squareInputs').classList.remove('hidden');
+      } else if (shape === 'rectangle') {
+          document.getElementById('rectangleInputs').classList.remove('hidden');
+      } else if (shape === 'triangle') {
+          document.getElementById('triangleInputs').classList.remove('hidden');
+      } else if (shape === 'circle') {
+          document.getElementById('circleInputs').classList.remove('hidden');
+      }
+  }
 
-    function submitForm(event) {
-        event.preventDefault();
-        const form = document.getElementById('shapeForm');
-        const formData = new FormData(form);
-        const params = new URLSearchParams(formData).toString();
+  function submitForm(event) {
+      event.preventDefault();
+      const form = document.getElementById('shapeForm');
+      const formData = new FormData(form);
+      const params = new URLSearchParams(formData).toString();
 
-        let url = calculationType === 'area' ? '/surface/resultarea' : '/surface/resultcircumference';
+      let url = calculationType === 'area' ? '/surface/resultarea' : '/surface/resultcircumference';
 
-        fetch(`${url}?${params}`)
-            .then(response => response.json())
-            .then(result => {
-                document.getElementById('areaResult').textContent = result.area || result.circumference;
-                document.getElementById('result').classList.remove('hidden');
-                drawShape();
-            })
-            .catch(error => console.error('Error:', error));
-    }
+      fetch(`${url}?${params}`)
+          .then(response => response.json())
+          .then(result => {
+              const shape = document.getElementById('shape').value;
+              let calculationSteps = '';
 
-    function drawShape() {
-    const shape = document.getElementById('shape').value;
-    const canvas = document.getElementById('shapeCanvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+              if (calculationType === 'area') {
+                  if (shape === 'square') {
+                      const side = parseFloat(document.getElementById('squareSide').value);
+                      calculationSteps = `Berechnung: ${side} * ${side} = ${result.area}`;
+                  } else if (shape === 'rectangle') {
+                      const width = parseFloat(document.getElementById('rectangleWidth').value);
+                      const height = parseFloat(document.getElementById('rectangleHeight').value);
+                      calculationSteps = `Berechnung: ${width} * ${height} = ${result.area}`;
+                  } else if (shape === 'triangle') {
+                      const base = parseFloat(document.getElementById('triangleBase').value);
+                      const height = parseFloat(document.getElementById('triangleHeight').value);
+                      calculationSteps = `Berechnung: 0.5 * ${base} * ${height} = ${result.area}`;
+                  } else if (shape === 'circle') {
+                      const radius = parseFloat(document.getElementById('circleRadius').value);
+                      calculationSteps = `Berechnung: π * ${radius}^2 = ${result.area}`;
+                  }
+                  document.getElementById('areaResult').textContent = `${result.area} mm² (${calculationSteps})`;
+              } else if (calculationType === 'circumference') {
+                  if (shape === 'square') {
+                      const side = parseFloat(document.getElementById('squareSide').value);
+                      calculationSteps = `Berechnung: 4 * ${side} = ${result.circumference}`;
+                  } else if (shape === 'rectangle') {
+                      const width = parseFloat(document.getElementById('rectangleWidth').value);
+                      const height = parseFloat(document.getElementById('rectangleHeight').value);
+                      calculationSteps = `Berechnung: 2 * (${width} + ${height}) = ${result.circumference}`;
+                  } else if (shape === 'triangle') {
+                      const base = parseFloat(document.getElementById('triangleBase').value);
+                      const height = parseFloat(document.getElementById('triangleHeight').value);
+                      const hypotenuse = Math.sqrt(base * base + height * height);
+                      calculationSteps = `Berechnung: ${base} + ${height} + ${hypotenuse.toFixed(2)} = ${result.circumference}`;
+                  } else if (shape === 'circle') {
+                      const radius = parseFloat(document.getElementById('circleRadius').value);
+                      calculationSteps = `Berechnung: 2 * π * ${radius} = ${result.circumference}`;
+                  }
+                  document.getElementById('areaResult').textContent = `${result.circumference} mm (${calculationSteps})`;
+              }
 
-    ctx.fillStyle = '#4682B4';
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 2;
+              document.getElementById('result').classList.remove('hidden');
+              drawShape();
+          })
+          .catch(error => console.error('Error:', error));
+  }
 
-    if (shape === 'square') {
-        const side = Math.min(parseFloat(document.getElementById('squareSide').value), 100);
-        ctx.fillRect(0, 100 - side, side, side);
-        ctx.strokeRect(0, 100 - side, side, side);
-    } else if (shape === 'rectangle') {
-        const width = Math.min(parseFloat(document.getElementById('rectangleWidth').value), 100);
-        const height = Math.min(parseFloat(document.getElementById('rectangleHeight').value), 100);
-        ctx.fillRect(0, 100 - height, width, height);
-        ctx.strokeRect(0, 100 - height, width, height);
-    } else if (shape === 'triangle') {
-        const base = Math.min(parseFloat(document.getElementById('triangleBase').value), 100);
-        const height = Math.min(parseFloat(document.getElementById('triangleHeight').value), 100);
-        ctx.beginPath();
-        ctx.moveTo(0, 100);
-        ctx.lineTo(base, 100);
-        ctx.lineTo(base / 2, 100 - height);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-    }else if (shape === 'circle') {
-        const radius = Math.min(parseFloat(document.getElementById('circleRadius').value), 50);
-        ctx.beginPath();
-        ctx.arc(50, 50, radius, 0, 2 * Math.PI);
-        ctx.closePath();
-    ctx.fill();
-        ctx.stroke();
-    }
-    canvas.classList.remove('hidden');
-}
+  function drawShape() {
+      const shape = document.getElementById('shape').value;
+      const canvas = document.getElementById('shapeCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#4682B4';
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+
+      if (shape === 'square') {
+          const side = Math.min(parseFloat(document.getElementById('squareSide').value), 100);
+          ctx.fillRect(0, 100 - side, side, side);
+          ctx.strokeRect(0, 100 - side, side, side);
+      } else if (shape === 'rectangle') {
+          const width = Math.min(parseFloat(document.getElementById('rectangleWidth').value), 100);
+          const height = Math.min(parseFloat(document.getElementById('rectangleHeight').value), 100);
+          ctx.fillRect(0, 100 - height, width, height);
+          ctx.strokeRect(0, 100 - height, width, height);
+      } else if (shape === 'triangle') {
+          const base = Math.min(parseFloat(document.getElementById('triangleBase').value), 100);
+          const height = Math.min(parseFloat(document.getElementById('triangleHeight').value), 100);
+          ctx.beginPath();
+          ctx.moveTo(0, 100);
+          ctx.lineTo(base, 100);
+          ctx.lineTo(base / 2, 100 - height);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+      } else if (shape === 'circle') {
+          const radius = Math.min(parseFloat(document.getElementById('circleRadius').value), 50);
+          ctx.beginPath();
+          ctx.arc(50, 50, radius, 0, 2 * Math.PI);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+      }
+      canvas.classList.remove('hidden');
+  }
 </script>
 </body>
 </html>
